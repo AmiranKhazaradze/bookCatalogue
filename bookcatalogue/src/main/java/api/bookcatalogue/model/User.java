@@ -1,12 +1,10 @@
 package api.bookcatalogue.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "users", schema = "book_database")
 public class User  {
 
     @Id

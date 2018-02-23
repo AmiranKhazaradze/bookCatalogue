@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" >
   <div class="container-fluid">
     <div class="navbar-header">
       <p >BOOK CATALOGUE</p>
@@ -15,10 +15,11 @@
           <input required type="password" class="form-control" id="pwd"
                  placeholder="Enter password" name="pwd" [(ngModel)]="password">
         </div>
-        <button type="submit"
+        <button  type="submit"
                 class="btn btn-success"
                 (click)="submit()"
-                [disabled]="!form.valid">Submit</button>
+                [disabled]="!form.valid"
+                 routerLink = ''>Submit</button>
       </form>
     </ul>
   </div>

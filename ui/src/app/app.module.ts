@@ -12,7 +12,8 @@ import {UserService} from "./login/user.service";
 
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: LoginComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'favorite', component: FavoriteComponent },
   ];
 

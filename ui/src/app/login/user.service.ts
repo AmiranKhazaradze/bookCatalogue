@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class UserService {
@@ -9,7 +10,9 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  storeUser(user: any ) {
-    return this.http.post(UserService.POST_URL, user,{headers: this.headers});
+  storeUser(user: any ): Observable<any> {
+    return this.http.post(UserService.POST_URL, user, {headers: this.headers});
   }
+
+
 }

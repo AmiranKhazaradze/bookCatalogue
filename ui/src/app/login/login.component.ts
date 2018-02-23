@@ -1,22 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {UserService} from "./user.service";
+import {Router} from "@angular/router";
+import {Book} from "../share/entity/book";
+import {DataService} from "../share/entity/data.service";
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
+
+
 export class LoginComponent implements OnInit {
 
    email: string;
    password: string;
-
-
-
-  constructor(private userService: UserService) { }
+   @Input() books: Book[] = [];
+  constructor(private userService: UserService,
+              private routes: Router,
+              private data: DataService) {}
 
   ngOnInit() {
+    this.data.currentBooks.subscribe()
   }
+
 
   submit(){
 
@@ -24,7 +33,13 @@ export class LoginComponent implements OnInit {
 
     this.userService.storeUser(user)
       .subscribe(
-        (response) => console.log(response),
+        (response) => {
+          if(response != null) {
+             this.books= response;
+
+            this.routes.navigate(['/home']);
+          }
+        },
         (error) => console.log(error)
       );
   }

@@ -1,5 +1,6 @@
 package api.bookcatalogue;
 
+import api.bookcatalogue.model.Book;
 import api.bookcatalogue.model.User;
 import org.springframework.web.bind.annotation.*;
 
