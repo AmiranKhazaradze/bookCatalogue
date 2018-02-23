@@ -1,0 +1,29 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <p >BOOK CATALOGUE</p>
+    </div>
+    <ul  class="col-xs-12 col-sm-12">
+      <form #form="ngForm" class="form-inline" >
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input required type="email" class="form-control" id="email"
+                 placeholder="Enter email" name="email" [(ngModel)]="email">
+        </div>
+        <div class="form-group">
+          <label for="pwd">Password:</label>
+          <input required type="password" class="form-control" id="pwd"
+                 placeholder="Enter password" name="pwd" [(ngModel)]="password">
+        </div>
+        <button type="submit"
+                class="btn btn-success"
+                (click)="submit()"
+                [disabled]="!form.valid">Submit</button>
+      </form>
+    </ul>
+  </div>
+</nav>
+<img src="https://cdn-images-1.medium.com/max/1600/1*9LSULD1sjjspbaN-XmRSHw.jpeg"
+     class="img-responsive" alt="Cinque Terre">
+
+
