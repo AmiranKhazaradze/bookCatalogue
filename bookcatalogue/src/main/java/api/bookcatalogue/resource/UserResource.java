@@ -5,15 +5,15 @@ import api.bookcatalogue.model.User;
 import api.bookcatalogue.repository.BookRepository;
 import api.bookcatalogue.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestController
 public class UserResource {
 
@@ -23,25 +23,21 @@ public class UserResource {
     @Autowired
     BookRepository bookRepository;
 
-    @PostMapping(value = "/login")
-    public List<Book> login(@RequestBody final User user){
-        User tmp = findUserInDatabase(user);
-        if(tmp != null){
-            if(user.getPassword().equals(tmp.getPassword()))
-                return this.bookRepository.findAll();
-        }
-        return  null;
+    @GetMapping(value = "/home")
+    public List<Book> home(){
+        return this.bookRepository.findAll();
     }
 
-    private User findUserInDatabase(User user){
-        Iterator<User> iterator =  this.userRepository.findAll().iterator();
-        while (iterator.hasNext()) {
-            User tmp = iterator.next();
-            if (tmp.getEmail().equals(user.getEmail())) {
-                return tmp;
-            }
-        }
-        return null;
+    @GetMapping(value = "/getFavorites")
+    public List<Book> getFavorite(){
+         return new ArrayList<>(this.userRepository.findOne(1).getBooks());
+    }
+
+    @PostMapping(value = "/addFavorite")
+    public void addFavorite(@RequestBody final Book book){
+        User user = this.userRepository.findOne(1);
+        user.getBooks().add(book);
+        this.userRepository.save(user);
     }
 
 }

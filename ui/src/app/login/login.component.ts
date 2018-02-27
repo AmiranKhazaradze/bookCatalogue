@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from "./user.service";
 import {Router} from "@angular/router";
 import {Book} from "../share/entity/book";
-import {DataService} from "../share/entity/data.service";
+import {BookService} from "../share/entity/book.service";
 
 
 @Component({
@@ -17,13 +17,10 @@ export class LoginComponent implements OnInit {
 
    email: string;
    password: string;
-   @Input() books: Book[] = [];
   constructor(private userService: UserService,
-              private routes: Router,
-              private data: DataService) {}
+              private routes: Router) {}
 
   ngOnInit() {
-    this.data.currentBooks.subscribe()
   }
 
 
@@ -35,9 +32,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (response) => {
           if(response != null) {
-             this.books= response;
-
-            this.routes.navigate(['/home']);
+             this.routes.navigate(['/home']);
           }
         },
         (error) => console.log(error)

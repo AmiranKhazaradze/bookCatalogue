@@ -1,8 +1,12 @@
 package api.bookcatalogue.model;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
+
+@Data
 @Entity
 @Table(name = "users", schema = "book_database")
 public class User  {
@@ -20,55 +24,21 @@ public class User  {
     @Column(name ="m_password")
     private String password;
 
-    public void setId(int id) {
-        this.id = id;
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_book",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books;
+
+    public Set<Book> getBooks(){
+        return books;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBooks(Set<Book> books){
+        this.books = books;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getId() {
-
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }
