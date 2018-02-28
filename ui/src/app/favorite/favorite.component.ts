@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {HomeComponent} from "../home/home.component";
 import {Book} from "../share/entity/book";
 
 @Component({
@@ -12,14 +11,14 @@ export class FavoriteComponent implements OnInit {
 
   books: Book[] = [];
 
-  private static readonly URL = 'http://localhost:8080/getFavorites';
+  private static readonly GET_FAVORITE_URL = 'api/getFavorites';
+  private static readonly DELETE_FAVORITE_URL = 'api/deleteFavorite';
   headers = new HttpHeaders(
     {'Content-Type':'application/json; charset=utf-8'});
   constructor(private http: HttpClient) {
-    this.http.get<any>(FavoriteComponent.URL,{headers: this.headers})
+    this.http.get<any>(FavoriteComponent.GET_FAVORITE_URL,{headers: this.headers})
       .subscribe(
         data => {
-          console.log(data);
           this.books = data;
         }
       )
@@ -28,4 +27,15 @@ export class FavoriteComponent implements OnInit {
   ngOnInit() {
   }
 
+  deleteFavorite(book: Book){
+    this.http.post(FavoriteComponent.DELETE_FAVORITE_URL,book,{headers: this.headers})
+      .subscribe(
+        data =>{
+          var index = this.books.indexOf(book, 0);
+          if (index > -1) {
+            this.books.splice(index, 1);
+          }
+        }
+      )
+  }
 }

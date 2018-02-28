@@ -9,12 +9,15 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestController
+@RequestMapping(path = "/api")
 public class UserResource {
 
     @Autowired
@@ -23,6 +26,9 @@ public class UserResource {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    HttpSession httpSession;
+
     @GetMapping(value = "/home")
     public List<Book> home(){
         return this.bookRepository.findAll();
@@ -30,14 +36,36 @@ public class UserResource {
 
     @GetMapping(value = "/getFavorites")
     public List<Book> getFavorite(){
-         return new ArrayList<>(this.userRepository.findOne(1).getBooks());
+
+        User user = (User) this.httpSession.getAttribute("user");
+
+        return new ArrayList<>(this.userRepository.findOne(
+                this.userRepository.findByEmail(user.getEmail()).getId()).getBooks());
     }
 
     @PostMapping(value = "/addFavorite")
     public void addFavorite(@RequestBody final Book book){
-        User user = this.userRepository.findOne(1);
+        User tmp = (User) this.httpSession.getAttribute("user");
+        User user = this.userRepository.findOne(this.userRepository.findByEmail(tmp.getEmail()).getId());
         user.getBooks().add(book);
         this.userRepository.save(user);
+    }
+
+    @PostMapping(value = "/deleteFavorite")
+    public void deleteFavorite(@RequestBody final Book book){
+        User tmp = (User) this.httpSession.getAttribute("user");
+        User user = this.userRepository.findOne(this.userRepository.findByEmail(tmp.getEmail()).getId());
+        user.getBooks().remove(book);
+        this.userRepository.save(user);
+    }
+
+    @PostMapping(value = "/favoriteBookIsAdded")
+    public boolean favoriteBookIsAdded(@RequestBody final Book book){
+        User tmp = (User) this.httpSession.getAttribute("user");
+        User user = this.userRepository.findOne(this.userRepository.findByEmail(tmp.getEmail()).getId());
+        if(user.getBooks().contains(book))
+            return true;
+        return false;
     }
 
 }
