@@ -23,10 +23,9 @@ public class LoginController {
 
 
     @PostMapping(value = "/login")
-    public User login(@RequestBody final User user,HttpSession httpSession){
-        User loginedUser = this.userRepository.findByEmail(user.getEmail());
-        if(loginedUser != null && loginedUser.getPassword().equals(user.getPassword())){
-            this.httpSession = httpSession;
+    public User login(@RequestBody final User user){
+        User currentUser = this.userRepository.findByEmail(user.getEmail());
+        if(currentUser != null && currentUser.getPassword().equals(user.getPassword())){
             this.httpSession.setAttribute("user",user);
             return user;
         }

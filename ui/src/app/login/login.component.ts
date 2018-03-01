@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "./user.service";
 import {Router} from "@angular/router";
-import {Book} from "../share/entity/book";
-import {BookService} from "../share/entity/book.service";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 
 @Component({
@@ -17,8 +15,15 @@ export class LoginComponent implements OnInit {
 
    email: string;
    password: string;
-  constructor(private userService: UserService,
-              private routes: Router) {}
+
+   private loginedUserIsAdmin: Boolean;
+
+  headers = new HttpHeaders(
+    {'Content-Type':'application/json; charset=utf-8'});
+
+  constructor(private routes: Router, private http: HttpClient) {
+    this.loginedUserIsAdmin = false;
+  }
 
   ngOnInit() {
   }
@@ -27,16 +32,30 @@ export class LoginComponent implements OnInit {
   submit(){
 
     var user ={"email": this.email, "password": this.password };
+    this.checkUser(user);
 
-    this.userService.storeUser(user)
-      .subscribe(
-        (response) => {
-          if(response != null) {
-             this.routes.navigate(['/home']);
+    if(this.loginedUserIsAdmin){
+      this.routes.navigate(['/admin'])
+    }
+    else{
+      this.http.post('api/login',user,{headers:this.headers})
+        .subscribe(
+          data =>{
+            if(data != null){
+              this.routes.navigate(['/home']);
+            }
           }
-        },
-        (error) => console.log(error)
-      );
+        )
+    }
+  }
+
+  private checkUser(user: any){
+    this.http.post('api/isAdmin',user, {headers: this.headers}).subscribe(
+      data =>{
+          if(data == true)
+            this.loginedUserIsAdmin = true;
+      }
+    )
   }
 
 }

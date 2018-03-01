@@ -8,14 +8,15 @@ import {HomeComponent} from './home/home.component';
 import {FavoriteComponent} from './favorite/favorite.component';
 import {LoginComponent} from './login/login.component';
 import {HttpClientModule } from "@angular/common/http";
-import {UserService} from "./login/user.service";
 import {BookService} from "./share/entity/book.service";
+import { AdminComponent } from './admin/admin.component';
 
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'favorite', component: FavoriteComponent },
+  { path: 'admin', component: AdminComponent },
   ];
 
 @NgModule({
@@ -24,6 +25,7 @@ const appRoutes: Routes = [
     HomeComponent,
     FavoriteComponent,
     LoginComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [UserService, BookService],
+  providers: [BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

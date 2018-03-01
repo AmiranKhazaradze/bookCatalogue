@@ -4,7 +4,7 @@
       <p >BOOK CATALOGUE</p>
     </div>
     <ul  class="col-xs-12 col-sm-12">
-      <form #form="ngForm" class="form-inline" >
+      <form  #form="ngForm" class="form-inline" (submit)="submit()">
         <div class="form-group">
           <label for="email">Email:</label>
           <input required type="email" class="form-control" id="email"
@@ -17,7 +17,6 @@
         </div>
         <button  type="submit"
                 class="btn btn-success"
-                (click)="submit()"
                 [disabled]="!form.valid"
                  routerLink = ''>Submit</button>
       </form>
